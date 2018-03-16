@@ -15,7 +15,7 @@ class Database
   end
 
   #
-  # Acessando tabela de usuários
+  # Alias para acessar tabela de usuários
   #
   def users
     @db[:users]
