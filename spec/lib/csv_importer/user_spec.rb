@@ -12,6 +12,4 @@ RSpec.describe CsvImporter::User do
       expect(users.count).to be 5
     end
   end
-
-
 end
