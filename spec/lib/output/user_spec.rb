@@ -28,7 +28,7 @@ RSpec.describe Output::User do
       it "Prints an feedback message" do
         expect {
           klass.show(users)
-        }.to output(/Nenhum usuário encontrado./).to_stdout
+        }.to output(/No users found./).to_stdout
       end
     end
   end
@@ -37,7 +37,7 @@ RSpec.describe Output::User do
     it "Prints a feedback message" do
       expect {
         klass.show_empty_msg
-      }.to output(/Nenhum usuário encontrado/).to_stdout
+      }.to output(/No users found./).to_stdout
     end
   end
 end

@@ -10,11 +10,15 @@ class Application
   include Output::User
 
   def start(args)
+    cli = CLI.new(args)
     begin
-      result = CLI.new(args).parse!
+      result = cli.parse!
       CsvImporter::User.to_database(result[:source])
     rescue Exception => err
-      puts err
+      puts "Ops... Something went wrong"
+      puts "ERROR => #{err}\n\n"
+
+      puts cli.help
       exit
     end
 

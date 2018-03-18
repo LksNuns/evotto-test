@@ -1,10 +1,11 @@
 require 'slop'
 
 class CLI
-  attr_reader :args
+  attr_reader :args, :opts
 
   def initialize(args)
     @args = standardize_order_by_args(args)
+    initialize_opt_parser
   end
 
   #
@@ -13,12 +14,17 @@ class CLI
   #
   def parse!
     begin
-      result = Slop::Parser.new(opt_parser).parse(@args).to_hash
+      result = Slop::Parser.new(@opts).parse(@args).to_hash
       ensure_one_option(result)
       result
     rescue Exception => e
       raise
     end
+  end
+
+  # Alias para @opts
+  def help
+    @opts
   end
 
   private
@@ -48,7 +54,7 @@ class CLI
   #
   # Opções de parametros para CLI
   #
-  def opt_parser
+  def initialize_opt_parser
     opts = Slop::Options.new
     opts.banner = "Usage: app.rb --source CSV_FILE [options]"
     opts.separator ""
@@ -67,7 +73,7 @@ class CLI
       # exit
     end
 
-    opts
+    @opts = opts
   end
 
   #

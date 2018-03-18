@@ -13,7 +13,7 @@ module Output
     end
 
     def show_empty_msg
-      puts "Nenhum usuário encontrado."
+      puts "No users found."
     end
   end
 end
