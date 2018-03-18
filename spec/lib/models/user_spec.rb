@@ -3,36 +3,43 @@ require 'spec_helper'
 RSpec.describe User do
   before do
     User.dataset.destroy
-    %w[Paulo Zalito João Afonso].each { |name| User.create(name: name) }
+    %w[Paulo Zalito João Afonso].each do |name|
+      User.create(name: name, age: 20)
+    end 
   end
 
-  # TODO Corrigir testes
-  skip describe '.find' do
-    it 'returns users with matched name' do
-      expect{
-        User.find('Afonso')
-      }.to output(
-        <<~EOF
-          NAME | Age | ProjectCount | TotalValue
-          Afonso |  |  |
-        EOF
-      ).to_stdout
+  describe '.find' do
+    subject(:result) { User.find('afonso') }
+
+    it { expect(result.count).to be 1 }
+    it { expect(result.first[:name]).to eq "Afonso" }
+  end
+
+  describe '.total' do
+    subject(:result) { User.total(:age) }
+
+    it { is_expected.to be 80 }
+    
+    describe "when have no data" do
+      before { User.dataset.destroy }
+      
+      it { is_expected.to be nil }
     end
   end
+  
+  describe '.order_by' do
+    describe "When search with DESC direction" do
+      subject(:result) { User.order_by(:name, :desc) }
+      
+      it { expect(result.last[:name]).to  eq "Afonso" }
+      it { expect(result.first[:name]).to eq "Zalito" }
+    end
 
-  # TODO Corrigir testes
-  skip describe '.order_by' do
-    it 'returns users ordered by :name asc' do
-      expect{
-        User.order_by(:name, :asc)
-      }.to output(<<~HEREDOC
-        NAME | Age | ProjectCount | TotalValue
-        Afonso |  |  |
-        João |  |  |
-        Paulo |  |  |
-        Zalito |  |  |
-      HEREDOC
-      ).to_stdout
+    describe "When search with ASC direction" do
+      subject(:result) { User.order_by(:name, :asc) }
+      
+      it { expect(result.first[:name]).to eq "Afonso" }
+      it { expect(result.last[:name]).to  eq "Zalito" }
     end
   end
 
