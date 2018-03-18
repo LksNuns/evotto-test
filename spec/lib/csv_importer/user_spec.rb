@@ -6,7 +6,10 @@ RSpec.describe CsvImporter::User do
   describe '.to_database' do
     let(:users) { Database.instance.users }
 
-    before { CsvImporter::User.to_database(file) }
+    before do
+      User.dataset.destroy
+      CsvImporter::User.to_database(file)
+    end
 
     it 'imports data from .csv file to users table' do
       expect(users.count).to be 5
