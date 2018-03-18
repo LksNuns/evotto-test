@@ -1,69 +1,51 @@
 # Evotto - Ruby Test
 
+### Como Usar
+_Help_ da aplicação:
+```
+Usage: app.rb --source CSV_FILE [options]
+
+Specific options:
+    --source    CSV_FILE to be imported
+    --order_by  Order by COLUMN and DIRECTION (asc|desc)
+    --find      Search user by NAME
+    --total     Returns total sum of COLUMN
+
+Common options:
+    -h, --help  Show this message
+```
+
+## Acessando fora do CLI
+É possível acessar a aplicação (para testes) através do comando:
+
+```
+irb -r ./console.rb
+```
+
 ### Objetivo
+- [x] Listar os usuários
+- [x] Classificar os usuários pelos parâmetros
+- [x] Mostrar o total de um parâmetro por comando
+- [x] Exibir dados de um usuário especifico
 
-Crie um mini aplicativo (CLI) capaz de ler um arquivo CSV (data/users.csv), e classificar os dados. O aplicativo precisa:
-- Listar os usuários
-- Classificar os usuários pelos parâmetros
-- Mostrar o total de um parâmetro por comando
-- Exibir dados de um usuário especifico
+## Ordenação (order_by)
+É possível ordernar por qualquer coluna disponível na tabela de `users`.
 
-Modo de uso esperado:
+## Total (total)
+É possível encontrar o `total` de todas as colunas de tipo Inteiro.
 
-(com ordem)
 
-```
-ruby app.rb --source data/users.csv --order_by age desc
+## Buscar (find)
+É possível realizar buscas pelo nome de usuário, sendo indiferente maiusculas e minusculas (_case insensitive_).
 
-# Results (console output)
-Name | Age | ProjectCount | TotalValue
-John | 32 anos | 3 | 25
-Maria | 27 anos | 4 | 49
-...
-```
+Para o _edge case_ citado, ao buscar por um determinado nome é exibido todos os usuários que derem _match_.
 
-Também pode exibir sem ordem:
+### TODO
+Tarefas para melhoramento do código.
 
-```
-ruby app.rb --source data/users.csv
-
-# Results (console output)
-Name | Age | ProjectCount | TotalValue
-Maria | 27 anos | 4 | 49
-John | 32 anos | 3 | 25
-...
-```
-
-Exibir os resultados:
-
-```
-ruby app.rb --source data/users.csv --total TotalValue
-
-# Results (console output)
-TotalValue: 74
-```
-
-Encontrar usuário especifico:
-
-```
-ruby app.rb --source data/users.csv --find John
-
-# Results (console output)
-Name | Age | ProjectCount | TotalValue
-John | 32 anos | 3 | 25
-```
-
-Prepare-se para alguns edge cases, por exemplo: O que acontece se não encontrar nenhum usuário? Posso selecionar mais de 2 usuários ao mesmo tempo?
-
-### Requerimentos
-
-- Escreva utilizando Ruby (2+, fique a vontade para escolher a versão, aconselhada é a 2.3.1), fique livre para usar quaisquer bibliotecas, base de dados a sua escolha e etc
-- Escreva o máximo de testes possíveis
-- Deve ser possível utilizar a biblioteca diretamente (Não apenas a CLI) para efetuar os testes
-- Utilize dos príncipios do bom código, escreva com commits bem descritivos, utilize Design Patterns (DRY, SOLID, e etc)
-- Atualize este documento com quaisquers informações pertinentes para rodar o projeto
-
-### Como fazer o teste
-
-- Faça um fork ou clone desse projeto no seu próprio repositório e faça o trabalho
-- Quando terminar, envie o link do repositório para gustavo@evotto.com.br com quaisquer outras informações necessárias
+- [ ] Validar arquivo .csv passado por parametro
+- [ ] Tratar erros de forma mais precisa (analisando cada tipo de erro)
+- [ ] Refatorar `CLI#ensure_one_option`
+- [ ] Tratar destruição do banco de dados a cada interação do Rspec
+- [ ] Adicionar _factories_ para melhorar qualidade dos testes
+- [ ] Analisar motivo de erro no uso da flag `-h` ou `--help` (Deveria impedir de continuar a aplicação)
