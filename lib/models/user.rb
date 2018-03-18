@@ -1,10 +1,7 @@
-require_relative './output/user'
 require_relative '../ext/string'
 require_relative '../database'
 
 class User < Sequel::Model(Database.instance.users)
-  extend Output::User
-
   #
   # Ordena `users` de acordo com a direção e tabela,
   # e imprime na tela os dados retornados
@@ -14,7 +11,7 @@ class User < Sequel::Model(Database.instance.users)
   #
   def self.order_by(column, direction)
     col = sanakeize!(column)
-    show send(direction(direction), col)
+    send(direction(direction), col)
   end
 
   #
@@ -24,18 +21,17 @@ class User < Sequel::Model(Database.instance.users)
   # @param [String] name Texto usado para realizar busca de usuários
   #
   def self.find(name)
-    show where(Sequel.like(:name, "%#{name}%", case_insensitive: true))
+    where(Sequel.like(:name, "%#{name}%", case_insensitive: true))
   end
 
   #
-  # Soma o total de uma determinada coluna,
-  # e imprime na tela os dados retornados.
+  # Soma o total de uma determinada coluna
   #
   # @param [Symbol, String] column Coluna que será somada
   #
   def self.total(column)
     col = sanakeize!(column)
-    show_total(label: column, total: sum(col))
+    sum(col)
   end
 
   #
